@@ -1,0 +1,12 @@
+# Dependências
+node_modules/
+
+# Builds temporários do Next.js
+.next/
+
+# Arquivos locais/sensíveis
+.env
+
+# Arquivos de texto pessoais (se quiser manter só localmente)
+detalhes do projeto.txt
+pontos de melhoria.txt

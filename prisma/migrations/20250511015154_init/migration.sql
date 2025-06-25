@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Juros" ALTER COLUMN "tempo" SET DATA TYPE TEXT;

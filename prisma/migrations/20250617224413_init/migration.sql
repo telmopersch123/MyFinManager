@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "LimitedSimulation" ADD COLUMN     "lastDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
