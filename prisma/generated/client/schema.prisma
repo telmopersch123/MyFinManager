@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client" // Especifique o caminho desejado
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Calculation {
+  id        String   @id @default(uuid())
+  formula   String
+  result    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Juros {
+  id                String                       @id @default(uuid())
+  capitalinicial    String
+  valorMensal       String?
+  taxajuros         String
+  taxajurosUnidade  String // "mensal" ou "anual"
+  tempo             String
+  tempoUnidade      String // "meses" ou "anos"
+  valorInvestido    String
+  totalganhoemjuros String
+  valortotalfinal   String
+  userId            String
+  createdAt         DateTime                     @default(now())
+  updatedAt         DateTime                     @updatedAt
+  valoresMensais    JurosCompostosValuesMensal[]
+}
+
+model JurosCompostosValuesMensal {
+  id             String   @id @default(uuid())
+  jurosId        String
+  mes            String   @default("")
+  jurosMensal    Float    @default(0.0)
+  totalInvestido Float    @default(0.0)
+  totalJuros     Float    @default(0.0)
+  valorAcumulado Float    @default(0.0)
+  juros          Juros    @relation(fields: [jurosId], references: [id], onDelete: Cascade)
+  userId         String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Parcelamento {
+  id                 String           @id @default(uuid())
+  valorDivida        String
+  parcelas           String
+  jurosMes           String
+  primeiroVencimento String
+  valorFinanciado    String
+  parcelasResultado  String
+  taxaMensal         String
+  prestacaoMensal    String
+  totalJuros         String
+  totalPagar         String
+  userId             String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  cronogramaItems    CronogramaItem[]
+}
+
+model CronogramaItem {
+  id             String       @id @default(uuid())
+  parcela        String
+  dataVencimento String
+  prestacao      String
+  juros          String
+  amortizacao    String
+  saldo          String
+  parcelamentoId String
+  parcelamento   Parcelamento @relation(fields: [parcelamentoId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model LimitedSimulation {
+  id         String   @id @default(uuid())
+  quantidade Int
+  lastDate   DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String   @unique
+}
+
+model Transaction {
+  id            String                   @id @default(uuid())
+  name          String
+  type          TransactionType
+  amount        Decimal                  @db.Decimal(10, 2)
+  category      TransactionCategory
+  paymentMethod TransactionPaymentMethod
+  date          DateTime
+  createdAt     DateTime                 @default(now())
+  updatedAt     DateTime                 @updatedAt
+  userId        String
+}
+
+enum TransactionType {
+  DEPOSIT
+  EXPENSE
+  INVESTMENT
+}
+
+enum TransactionCategory {
+  HOUSING
+  TRANSPORTATION
+  FOOD
+  ENTERTAINMENT
+  HEALTH
+  UTILITY
+  SALARY
+  EDUCATION
+  OTHER
+}
+
+enum TransactionPaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_TRANSFER
+  BANK_SLIP
+  CASH
+  PIX
+  OTHER
+}
