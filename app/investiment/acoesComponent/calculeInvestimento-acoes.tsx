@@ -1,6 +1,6 @@
 import { RelatorioInvestimento } from "@/app/(home)/_actions/generate-ai-report/interfaces";
 import React from "react";
-import { SimulationResult } from "./page";
+import { SimulationResult } from "./SimuladorAcoes";
 
 interface InvestimentoAcoesProps {
   stockPrice: number;

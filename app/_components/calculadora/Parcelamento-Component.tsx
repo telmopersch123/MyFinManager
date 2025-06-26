@@ -1,3 +1,4 @@
+"use client";
 import { ParcelamentoResultado } from "@/app/_interfaces/interface";
 
 import Alert_Dialog from "@/app/transactions/_components/components/alert-dialog";
@@ -24,7 +25,7 @@ import MensagemEmpty from "./mensagemEmpty";
 
 interface CalculadoraSimulatorProps {
   controlMSGEmpty: boolean;
-  setControlMSGEmpty: (value: boolean) => void;
+  setControlMSGEmptyAction: (value: boolean) => void;
   mudadedCopyParcelamento: {
     campo1: string;
     campo2: string;
@@ -38,14 +39,16 @@ interface CalculadoraSimulatorProps {
     campo10: string;
     campo11: CronogramaItem[];
   };
-  setRefreshCalculations: React.Dispatch<React.SetStateAction<number>>;
+  setRefreshCalculationsAction: React.Dispatch<React.SetStateAction<number>>;
   controlVisibleCheck: boolean;
-  handleClique: () => void;
-  setSaldoDevedorGraphics: React.Dispatch<React.SetStateAction<string[]>>;
-  setAmortizacaoGraphics: React.Dispatch<React.SetStateAction<string[]>>;
-  setjurosGraphics: React.Dispatch<React.SetStateAction<string[]>>;
-  setDataVencimentoGraphics: React.Dispatch<React.SetStateAction<string[]>>;
-  setResultado: React.Dispatch<
+  handleCliqueAction: () => void;
+  setSaldoDevedorGraphicsAction: React.Dispatch<React.SetStateAction<string[]>>;
+  setAmortizacaoGraphicsAction: React.Dispatch<React.SetStateAction<string[]>>;
+  setjurosGraphicsAction: React.Dispatch<React.SetStateAction<string[]>>;
+  setDataVencimentoGraphicsAction: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+  setResultadoAction: React.Dispatch<
     React.SetStateAction<ParcelamentoResultado | undefined>
   >;
   resultado: ParcelamentoResultado | undefined;
@@ -75,16 +78,16 @@ export const addMonthsToDate = (dateStr: string, months: number): string => {
 
 export default function SimuladorParcelamento({
   controlMSGEmpty,
-  setControlMSGEmpty,
+  setControlMSGEmptyAction,
   mudadedCopyParcelamento,
-  setRefreshCalculations,
+  setRefreshCalculationsAction,
   controlVisibleCheck,
-  handleClique,
-  setSaldoDevedorGraphics,
-  setAmortizacaoGraphics,
-  setjurosGraphics,
-  setDataVencimentoGraphics,
-  setResultado,
+  handleCliqueAction,
+  setSaldoDevedorGraphicsAction,
+  setAmortizacaoGraphicsAction,
+  setjurosGraphicsAction,
+  setDataVencimentoGraphicsAction,
+  setResultadoAction,
   resultado,
 }: CalculadoraSimulatorProps) {
   const [inputOriginalValue, setInputOriginalValue] = useState<string>("");
@@ -106,22 +109,22 @@ export default function SimuladorParcelamento({
       const dataVencimento = resultado.cronograma.map(
         (item) => item.dataVencimento,
       );
-      setDataVencimentoGraphics(dataVencimento);
-      setSaldoDevedorGraphics(saldos);
-      setAmortizacaoGraphics(amortizacao);
-      setjurosGraphics(juros);
+      setDataVencimentoGraphicsAction(dataVencimento);
+      setSaldoDevedorGraphicsAction(saldos);
+      setAmortizacaoGraphicsAction(amortizacao);
+      setjurosGraphicsAction(juros);
     } else {
-      setDataVencimentoGraphics([]);
-      setSaldoDevedorGraphics([]);
-      setAmortizacaoGraphics([]);
-      setjurosGraphics([]);
+      setDataVencimentoGraphicsAction([]);
+      setSaldoDevedorGraphicsAction([]);
+      setAmortizacaoGraphicsAction([]);
+      setjurosGraphicsAction([]);
     }
   }, [
     resultado?.cronograma,
-    setSaldoDevedorGraphics,
-    setAmortizacaoGraphics,
-    setjurosGraphics,
-    setDataVencimentoGraphics,
+    setSaldoDevedorGraphicsAction,
+    setAmortizacaoGraphicsAction,
+    setDataVencimentoGraphicsAction,
+    setjurosGraphicsAction,
   ]);
 
   async function handleCalcular() {
@@ -139,7 +142,7 @@ export default function SimuladorParcelamento({
         inputJurosMes === "0,00" ||
         inputNumeroParcelas === "0,00"
       ) {
-        setControlMSGEmpty(true);
+        setControlMSGEmptyAction(true);
         return;
       }
 
@@ -179,8 +182,8 @@ export default function SimuladorParcelamento({
       }
       setOpen({ type: "", isOpen: false });
       setIsCalculated(true);
-      setControlMSGEmpty(false);
-      setResultado({
+      setControlMSGEmptyAction(false);
+      setResultadoAction({
         valorFinanciado: valorDivida.toString(),
         parcelas: parcelas.toString(),
         taxaMensal: jurosMes.toString(),
@@ -219,7 +222,7 @@ export default function SimuladorParcelamento({
         });
 
         if (response.ok) {
-          setRefreshCalculations((prev) => prev + 1);
+          setRefreshCalculationsAction((prev) => prev + 1);
         } else {
           console.error("Erro ao salvar cálculo:", await response.text());
         }
@@ -239,7 +242,7 @@ export default function SimuladorParcelamento({
       setinputNumeroParcelas(mudadedCopyParcelamento.campo2);
       setinputJurosMes(mudadedCopyParcelamento.campo3);
       setinputPrimeiroVencimento(mudadedCopyParcelamento.campo4);
-      setResultado({
+      setResultadoAction({
         valorFinanciado: mudadedCopyParcelamento.campo5,
         parcelas: mudadedCopyParcelamento.campo6,
         taxaMensal: mudadedCopyParcelamento.campo7,
@@ -251,7 +254,7 @@ export default function SimuladorParcelamento({
 
       setIsCalculated(false);
     }
-  }, [mudadedCopyParcelamento, setIsCalculated, setResultado]);
+  }, [mudadedCopyParcelamento, setIsCalculated, setResultadoAction]);
 
   return (
     <div className="mx-auto mt-1 max-w-[450px] rounded-xl bg-[hsl(var(--background))] p-6 shadow-lg dark:bg-neutral-900">
@@ -333,7 +336,7 @@ export default function SimuladorParcelamento({
         </div>
         <Button
           onClick={() => {
-            handleClique();
+            handleCliqueAction();
             handleCalcular();
           }}
           className="w-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary))]/90 dark:bg-primary dark:text-white dark:hover:bg-primary/90"
@@ -341,7 +344,7 @@ export default function SimuladorParcelamento({
           Simular
         </Button>
       </div>
-      <Alert_Dialog open={open} setOpen={setOpen} />
+      <Alert_Dialog open={open} setOpenAction={setOpen} />
       <div className="mt-4 w-auto space-y-2 rounded-md bg-[hsl(var(--card))] p-4 dark:bg-neutral-800">
         <p className="text-[hsl(var(--muted-foreground))] dark:text-neutral-300">
           Valor Financiado:{" "}

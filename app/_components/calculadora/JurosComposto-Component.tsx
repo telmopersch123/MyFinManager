@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -25,21 +26,21 @@ import { addMonthsToDate } from "./Parcelamento-Component";
 interface JurosCompostosComponentProps {
   inputRef: React.RefObject<HTMLInputElement>;
   capital: string;
-  setCapital: React.Dispatch<React.SetStateAction<string>>;
+  setCapitalAction: React.Dispatch<React.SetStateAction<string>>;
   taxa: string;
-  setTaxa: React.Dispatch<React.SetStateAction<string>>;
+  setTaxaAction: React.Dispatch<React.SetStateAction<string>>;
   tempo: string;
-  setTempo: React.Dispatch<React.SetStateAction<string>>;
+  setTempoAction: React.Dispatch<React.SetStateAction<string>>;
   juros: string;
   montante: string;
   controlMSGEmpty: boolean;
-  handleTempoInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setControlMSGEmpty: (value: boolean) => void;
-  setJuros: React.Dispatch<React.SetStateAction<string>>;
-  setMontante: React.Dispatch<React.SetStateAction<string>>;
-  setCapitalInvestido: React.Dispatch<React.SetStateAction<string>>;
+  handleTempoInputAction: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setControlMSGEmptyAction: (value: boolean) => void;
+  setJurosAction: React.Dispatch<React.SetStateAction<string>>;
+  setMontanteAction: React.Dispatch<React.SetStateAction<string>>;
+  setCapitalInvestidoAction: React.Dispatch<React.SetStateAction<string>>;
   capitalInvestido: string;
-  setRefreshCalculations: React.Dispatch<React.SetStateAction<number>>;
+  setRefreshCalculationsAction: React.Dispatch<React.SetStateAction<number>>;
   mudadedCopyJuros: {
     campo1: string;
     campo2: string;
@@ -52,38 +53,38 @@ interface JurosCompostosComponentProps {
     campo8: string;
     campo9: MonthlyData[];
   };
-  handleClique: () => void;
-  setMonthlyData: React.Dispatch<React.SetStateAction<MonthlyData[]>>;
+  handleCliqueAction: () => void;
+  setMonthlyDataAction: React.Dispatch<React.SetStateAction<MonthlyData[]>>;
   monthlyData: MonthlyData[];
   controlVisibleCheck: boolean;
-  setIsCalculated: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCalculatedAction: React.Dispatch<React.SetStateAction<boolean>>;
   isCalculated: boolean;
 }
 
 export default function JurosCompostosComponent({
   inputRef,
   capital,
-  setCapital,
+  setCapitalAction,
   taxa,
-  setTaxa,
+  setTaxaAction,
   tempo,
-  setTempo,
+  setTempoAction,
   juros,
   montante,
   controlMSGEmpty,
-  handleTempoInput,
-  setControlMSGEmpty,
-  setJuros,
-  setMontante,
-  setCapitalInvestido,
+  handleTempoInputAction,
+  setControlMSGEmptyAction,
+  setJurosAction,
+  setMontanteAction,
+  setCapitalInvestidoAction,
   capitalInvestido,
-  setRefreshCalculations,
+  setRefreshCalculationsAction,
   mudadedCopyJuros,
-  handleClique,
-  setMonthlyData,
+  handleCliqueAction,
+  setMonthlyDataAction,
   monthlyData,
   controlVisibleCheck,
-  setIsCalculated,
+  setIsCalculatedAction,
   isCalculated,
 }: JurosCompostosComponentProps) {
   const [periodoTaxa, setPeriodoTaxa] = useState<"mensal" | "anual">("anual");
@@ -98,7 +99,7 @@ export default function JurosCompostosComponent({
       const a = parseFloat(aporteMensal.replace(/\./g, "").replace(",", "."));
 
       if (c <= 0 || i <= 0 || t <= 0 || a <= 0) {
-        setControlMSGEmpty(true);
+        setControlMSGEmptyAction(true);
         return;
       }
 
@@ -146,12 +147,12 @@ export default function JurosCompostosComponent({
       const j = m - (c + a * meses);
       const totalInvestido = c + a * meses;
 
-      setMontante(m.toFixed(2));
-      setJuros(j.toFixed(2));
-      setCapitalInvestido(totalInvestido.toFixed(2));
-      setMonthlyData(monthlyDataCalc);
-      setControlMSGEmpty(false);
-      setIsCalculated(true);
+      setMontanteAction(m.toFixed(2));
+      setJurosAction(j.toFixed(2));
+      setCapitalInvestidoAction(totalInvestido.toFixed(2));
+      setMonthlyDataAction(monthlyDataCalc);
+      setControlMSGEmptyAction(false);
+      setIsCalculatedAction(true);
 
       if (controlVisibleCheck) {
         const response = await fetch("/api/calculationsjuros", {
@@ -173,7 +174,7 @@ export default function JurosCompostosComponent({
           }),
         });
         if (response.ok) {
-          setRefreshCalculations((prev) => prev + 1);
+          setRefreshCalculationsAction((prev: number) => prev + 1);
         } else {
           console.error("Erro ao salvar cálculo:", await response.text());
         }
@@ -185,10 +186,10 @@ export default function JurosCompostosComponent({
 
   useEffect(() => {
     if (mudadedCopyJuros) {
-      setCapital(mudadedCopyJuros.campo1);
+      setCapitalAction(mudadedCopyJuros.campo1);
       setAporteMensal(mudadedCopyJuros.campo2);
-      setTaxa(mudadedCopyJuros.campo3);
-      setTempo(mudadedCopyJuros.numero.toString());
+      setTaxaAction(mudadedCopyJuros.campo3);
+      setTempoAction(mudadedCopyJuros.numero.toString());
       if (
         mudadedCopyJuros.campo4 === "mensal" ||
         mudadedCopyJuros.campo4 === "anual"
@@ -203,11 +204,11 @@ export default function JurosCompostosComponent({
           mudadedCopyJuros.campo5 === "mensal" ? "meses" : "anos",
         );
       }
-      setCapitalInvestido(mudadedCopyJuros.campo6);
-      setJuros(mudadedCopyJuros.campo7);
-      setMontante(mudadedCopyJuros.campo8);
-      setMonthlyData(mudadedCopyJuros.campo9);
-      setIsCalculated(false);
+      setCapitalInvestidoAction(mudadedCopyJuros.campo6);
+      setJurosAction(mudadedCopyJuros.campo7);
+      setMontanteAction(mudadedCopyJuros.campo8);
+      setMonthlyDataAction(mudadedCopyJuros.campo9);
+      setIsCalculatedAction(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mudadedCopyJuros]);
@@ -226,7 +227,7 @@ export default function JurosCompostosComponent({
             ref={inputRef}
             type="text"
             value={capital}
-            onChange={(e) => customHandleCapitalChange(e, setCapital)}
+            onChange={(e) => customHandleCapitalChange(e, setCapitalAction)}
             className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
             placeholder="0"
           />
@@ -258,7 +259,7 @@ export default function JurosCompostosComponent({
               ref={inputRef}
               type="text"
               value={taxa}
-              onChange={(e) => customHandleCapitalChange(e, setTaxa)}
+              onChange={(e) => customHandleCapitalChange(e, setTaxaAction)}
               className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
               placeholder="0"
             />
@@ -287,7 +288,7 @@ export default function JurosCompostosComponent({
             <Input
               type="text"
               value={tempo}
-              onChange={handleTempoInput}
+              onChange={handleTempoInputAction}
               className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
               placeholder="0"
             />
@@ -311,7 +312,7 @@ export default function JurosCompostosComponent({
         <Button
           onClick={() => {
             handleCalcular();
-            handleClique();
+            handleCliqueAction();
           }}
           className="w-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary))]/90 dark:bg-primary dark:text-white dark:hover:bg-primary/90"
         >

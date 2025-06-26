@@ -241,7 +241,7 @@ const AiReportButton = ({
           )}
         </DialogContent>
       </Dialog>
-      <Alert_Dialog open={open} setOpen={setOpen} />
+      <Alert_Dialog open={open} setOpenAction={setOpen} />
     </>
   );
 };

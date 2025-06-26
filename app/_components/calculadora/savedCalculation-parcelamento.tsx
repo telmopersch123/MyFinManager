@@ -1,3 +1,4 @@
+"use client";
 import { CalculationParcelamento } from "@/app/_interfaces/interface";
 import { Copy, Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -31,22 +32,22 @@ interface MudadedCopyParcelamento {
 }
 
 interface SavedCalculationsProps {
-  setMudadedCopyParcelamento: React.Dispatch<
+  setMudadedCopyParcelamentoAction: React.Dispatch<
     React.SetStateAction<MudadedCopyParcelamento>
   >;
   refresh: number;
   divHeight: number;
-  setCalculations: React.Dispatch<
+  setCalculationsAction: React.Dispatch<
     React.SetStateAction<CalculationParcelamento[]>
   >;
   calculations: CalculationParcelamento[];
 }
 
 export default function SavedCalculationParcelamento({
-  setMudadedCopyParcelamento,
+  setMudadedCopyParcelamentoAction,
   refresh,
   divHeight,
-  setCalculations,
+  setCalculationsAction,
   calculations,
 }: SavedCalculationsProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +58,7 @@ export default function SavedCalculationParcelamento({
         const response = await fetch("/api/calculationsparcelamento");
         if (response.ok) {
           const data = await response.json();
-          setCalculations(data);
+          setCalculationsAction(data);
         } else {
           console.error(
             "Erro ao obter cálculos salvos:",
@@ -72,7 +73,7 @@ export default function SavedCalculationParcelamento({
     }
 
     fetchCalculationsParcelamento();
-  }, [refresh, setCalculations]);
+  }, [refresh, setCalculationsAction]);
 
   async function handleDeleteParcelamento(id: string) {
     try {
@@ -86,7 +87,7 @@ export default function SavedCalculationParcelamento({
         },
       );
       if (response.ok) {
-        setCalculations((prev) => prev.filter((calc) => calc.id !== id));
+        setCalculationsAction((prev) => prev.filter((calc) => calc.id !== id));
       } else {
         console.error("Erro ao deletar cálculo:", await response.text());
       }
@@ -104,7 +105,7 @@ export default function SavedCalculationParcelamento({
         },
       });
       if (response.ok) {
-        setCalculations([]);
+        setCalculationsAction([]);
       } else {
         console.error("Erro ao deletar cálculo:", await response.text());
       }
@@ -269,7 +270,7 @@ export default function SavedCalculationParcelamento({
                   aria-label="Copiar cálculo"
                   title="Copiar cálculo"
                   onClick={() =>
-                    setMudadedCopyParcelamento({
+                    setMudadedCopyParcelamentoAction({
                       campo1: (calc.valorDivida ?? "").replace("R$", "").trim(),
                       campo2: calc.parcelas ?? "",
                       campo3: calc.jurosMes ?? "",

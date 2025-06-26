@@ -8,7 +8,7 @@ import {
   ChartTooltip,
 } from "@/app/_components/ui/chart";
 import { CartesianGrid, Line, LineChart } from "recharts";
-import { SimuladorInvestimentosProps } from "../InvestimentosFixos/page";
+import { SimuladorInvestimentosProps } from "./SimuladorInvestimentos";
 
 const chartConfig = {
   desktop_1: {

@@ -279,17 +279,17 @@ export default function GetCalculator() {
           {controlModeCalculator === "default" && (
             <CalculadoraDefault
               expression={expression}
-              setExpression={setExpression}
-              setInternalExpression={setInternalExpression}
+              setExpressionAction={setExpression}
+              setInternalExpressionAction={setInternalExpression}
               internalExpression={internalExpression}
               error={error}
-              setError={setError}
-              setMudadedCopy={setMudadedCopy}
+              setErrorAction={setError}
+              setMudadedCopyAction={setMudadedCopy}
               mudadedCopy={mudadedCopy}
               controlModeCalculator={controlModeCalculator}
-              setControlMSGEmpty={setControlMSGEmpty}
+              setControlMSGEmptyAction={setControlMSGEmpty}
               controlVisibleCheck={controlVisibleCheck}
-              setRefreshCalculations={setRefreshCalculations}
+              setRefreshCalculationsAction={setRefreshCalculations}
             />
           )}
           {controlModeCalculator === "juros" && (
@@ -313,17 +313,17 @@ export default function GetCalculator() {
           {controlModeCalculator === "simulator" && (
             <>
               <CalculadoraSimulator
-                setControlMSGEmpty={setControlMSGEmpty}
+                setControlMSGEmptyAction={setControlMSGEmpty}
                 controlMSGEmpty={controlMSGEmpty}
                 mudadedCopyParcelamento={mudadedCopyParcelamento}
-                setRefreshCalculations={setRefreshCalculations}
+                setRefreshCalculationsAction={setRefreshCalculations}
                 controlVisibleCheck={controlVisibleCheck}
-                handleClique={handleClique}
-                setSaldoDevedorGraphics={setSaldoDevedorGraphics}
-                setAmortizacaoGraphics={setAmortizacaoGraphics}
-                setjurosGraphics={setjurosGraphics}
-                setDataVencimentoGraphics={setDataVencimentoGraphics}
-                setResultado={setResultado}
+                handleCliqueAction={handleClique}
+                setSaldoDevedorGraphicsAction={setSaldoDevedorGraphics}
+                setAmortizacaoGraphicsAction={setAmortizacaoGraphics}
+                setjurosGraphicsAction={setjurosGraphics}
+                setDataVencimentoGraphicsAction={setDataVencimentoGraphics}
+                setResultadoAction={setResultado}
                 resultado={resultado}
               />
               {jurosGraphics.length > 0 &&
@@ -341,26 +341,26 @@ export default function GetCalculator() {
         <div>
           {controlVisibleCheck && controlModeCalculator === "default" && (
             <SavedCalculationsDefault
-              setMudadedCopy={setMudadedCopy}
+              setMudadedCopyAction={setMudadedCopy}
               refresh={refreshCalculations}
             />
           )}
           {controlVisibleCheck && controlModeCalculator === "juros" && (
             <SavedCalculationJuros
-              setMudadedCopyJuros={setMudadedCopyJuros}
+              setMudadedCopyJurosAction={setMudadedCopyJuros}
               refresh={refreshCalculations}
               divHeight={divHeight ?? 0}
-              setCatchDate={setCatchDate}
-              setCalculations={setCalculations}
+              setCatchDateAction={setCatchDate}
+              setCalculationsAction={setCalculations}
               calculations={calculations}
             />
           )}
           {controlVisibleCheck && controlModeCalculator === "simulator" && (
             <SavedCalculationParcelamento
-              setMudadedCopyParcelamento={setMudadedCopyParcelamento}
+              setMudadedCopyParcelamentoAction={setMudadedCopyParcelamento}
               refresh={refreshCalculations}
               divHeight={divHeight ?? 0}
-              setCalculations={setCalculationsParce}
+              setCalculationsAction={setCalculationsParce}
               calculations={calculationsParce}
             />
           )}

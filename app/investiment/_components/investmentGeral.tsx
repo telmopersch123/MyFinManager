@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import InvestmentNav from "../_components/investment-nav";
-import { SimuladorAcoes } from "../acoesComponent/page";
+import { SimuladorAcoes } from "../acoesComponent/SimuladorAcoes";
 
 import {
   AcoesInputs,
@@ -12,9 +12,9 @@ import {
   RelatorioInvestimento,
 } from "@/app/(home)/_actions/generate-ai-report/interfaces";
 import { useUser } from "@clerk/nextjs";
-import { SimuladorFIIs } from "../FIISComponent/page";
-import { SimuladorInvestimentos } from "../InvestimentosFixos/page";
-import { SimuladorBitcoin } from "../criptoComponent/page";
+import { SimuladorFIIs } from "../FIISComponent/SimuladorFIIs";
+import { SimuladorInvestimentos } from "../InvestimentosFixos/SimuladorInvestimentos";
+import { SimuladorBitcoin } from "../criptoComponent/SimuladorBitcoin";
 
 export type InvestimentProps = {
   month: string;

@@ -9,7 +9,7 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "@/app/_components/ui/chart";
-import { SimulationResult } from "./page";
+import { SimulationResult } from "./SimuladorAcoes";
 
 const chartConfig = {
   desktop: {

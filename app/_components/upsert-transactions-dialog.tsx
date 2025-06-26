@@ -1,3 +1,4 @@
+"use client";
 import useSWR, { mutate } from "swr";
 import {
   transactionCategoryOptionsMap,
@@ -369,7 +370,7 @@ const UpsertTransactionDialog = ({
           </Form>
         </DialogContent>
       </Dialog>
-      <Alert_Dialog open={open} setOpen={setOpen} />
+      <Alert_Dialog open={open} setOpenAction={setOpen} />
     </>
   );
 };

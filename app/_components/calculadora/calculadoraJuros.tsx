@@ -142,27 +142,27 @@ export default function CalculadoraJuros({
           <JurosCompostosComponent
             inputRef={inputRef}
             capital={capital}
-            setCapital={setCapital}
+            setCapitalAction={setCapital}
             taxa={taxa}
-            setTaxa={setTaxa}
+            setTaxaAction={setTaxa}
             tempo={tempo}
             juros={juros}
             montante={montante}
             controlMSGEmpty={controlMSGEmpty}
-            handleTempoInput={handleTempoInput}
-            setTempo={setTempo}
-            setControlMSGEmpty={setControlMSGEmpty}
-            setJuros={setJuros}
-            setMontante={setMontante}
-            setCapitalInvestido={setCapitalInvestido}
+            handleTempoInputAction={handleTempoInput}
+            setTempoAction={setTempo}
+            setControlMSGEmptyAction={setControlMSGEmpty}
+            setJurosAction={setJuros}
+            setMontanteAction={setMontante}
+            setCapitalInvestidoAction={setCapitalInvestido}
             capitalInvestido={capitalInvestido}
-            setRefreshCalculations={setRefreshCalculations}
+            setRefreshCalculationsAction={setRefreshCalculations}
             mudadedCopyJuros={mudadedCopyJuros}
-            handleClique={handleClique}
-            setMonthlyData={setMonthlyData}
+            handleCliqueAction={handleClique}
+            setMonthlyDataAction={setMonthlyData}
             monthlyData={monthlyData}
             controlVisibleCheck={controlVisibleCheck}
-            setIsCalculated={setIsCalculated}
+            setIsCalculatedAction={setIsCalculated}
             isCalculated={isCalculated}
           />
           {monthlyData.length > 0 &&
@@ -181,24 +181,24 @@ export default function CalculadoraJuros({
           <JurosSimplesComponent
             inputRef={inputRef}
             capital={capital}
-            setCapital={setCapital}
+            setCapitalAction={setCapital}
             taxa={taxa}
-            setTaxa={setTaxa}
+            setTaxaAction={setTaxa}
             tempo={tempo}
-            setTempo={setTempo}
+            setTempoAction={setTempo}
             juros={juros}
-            setJuros={setJuros}
+            setJurosAction={setJuros}
             montante={montante}
             controlMSGEmpty={controlMSGEmpty}
-            handleTempoInput={handleTempoInput}
-            setControlMSGEmpty={setControlMSGEmpty}
-            setMontante={setMontante}
-            setRefreshCalculations={setRefreshCalculations}
+            handleTempoInputAction={handleTempoInput}
+            setControlMSGEmptyAction={setControlMSGEmpty}
+            setMontanteAction={setMontante}
+            setRefreshCalculationsAction={setRefreshCalculations}
             mudadedCopyJuros={mudadedCopyJuros}
             controlVisibleCheck={controlVisibleCheck}
-            setIsCalculated={setIsCalculated}
+            setIsCalculatedAction={setIsCalculated}
             isCalculated={isCalculated}
-            setHistoricoCalculos={setHistoricoCalculos}
+            setHistoricoCalculosAction={setHistoricoCalculos}
           />
 
           {historicoCalculos.length > 0 &&

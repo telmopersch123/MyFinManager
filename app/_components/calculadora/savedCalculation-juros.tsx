@@ -1,3 +1,4 @@
+"use client";
 import { MonthlyData } from "@/app/_interfaces/interface";
 import { Copy, Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -23,7 +24,7 @@ interface setCalculationsProps {
 }
 
 type SavedCalculationsProps = {
-  setMudadedCopyJuros: React.Dispatch<
+  setMudadedCopyJurosAction: React.Dispatch<
     React.SetStateAction<{
       campo1: string;
       campo2: string;
@@ -39,17 +40,19 @@ type SavedCalculationsProps = {
   >;
   refresh: number;
   divHeight: number;
-  setCatchDate: React.Dispatch<React.SetStateAction<string>>;
-  setCalculations: React.Dispatch<React.SetStateAction<setCalculationsProps[]>>;
+  setCatchDateAction: React.Dispatch<React.SetStateAction<string>>;
+  setCalculationsAction: React.Dispatch<
+    React.SetStateAction<setCalculationsProps[]>
+  >;
   calculations: setCalculationsProps[];
 };
 
 export default function SavedCalculationJuros({
-  setMudadedCopyJuros,
+  setMudadedCopyJurosAction,
   refresh,
   divHeight,
-  setCatchDate,
-  setCalculations,
+  setCatchDateAction,
+  setCalculationsAction,
   calculations,
 }: SavedCalculationsProps) {
   const [isLoading, setIsLoading] = useState(!calculations.length);
@@ -61,7 +64,7 @@ export default function SavedCalculationJuros({
         const response = await fetch("/api/calculationsjuros");
         if (response.ok) {
           const data = await response.json();
-          setCalculations(data);
+          setCalculationsAction(data);
         } else {
           console.error(
             "Erro ao obter cálculos salvos:",
@@ -79,7 +82,7 @@ export default function SavedCalculationJuros({
     } else {
       setIsLoading(false);
     }
-  }, [refresh, setCalculations, calculations.length]);
+  }, [refresh, calculations.length, setCalculationsAction]);
 
   async function handleDeleteCalculation(id: string) {
     try {
@@ -90,7 +93,9 @@ export default function SavedCalculationJuros({
         },
       });
       if (response.ok) {
-        setCalculations((prev) => prev.filter((calc) => calc.id !== id));
+        setCalculationsAction((prev: setCalculationsProps[]) =>
+          prev.filter((calc) => calc.id !== id),
+        );
       } else {
         console.error("Erro ao deletar cálculo:", await response.text());
       }
@@ -108,7 +113,7 @@ export default function SavedCalculationJuros({
         },
       });
       if (response.ok) {
-        setCalculations([]);
+        setCalculationsAction([]);
       } else {
         console.error("Erro ao deletar cálculo:", await response.text());
       }
@@ -249,8 +254,8 @@ export default function SavedCalculationJuros({
                   size="icon"
                   aria-label="Copiar cálculo"
                   onClick={() => {
-                    setCatchDate(calc.createdAt);
-                    setMudadedCopyJuros({
+                    setCatchDateAction(calc.createdAt);
+                    setMudadedCopyJurosAction({
                       campo1: (calc.capitalinicial ?? "")
                         .replace("R$", "")
                         .trim(),

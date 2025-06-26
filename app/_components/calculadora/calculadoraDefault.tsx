@@ -1,49 +1,50 @@
+"use client";
 import { evaluate } from "mathjs";
 import { useEffect, useRef } from "react";
 
 interface CalculadoraProps {
   expression: string;
-  setExpression: (value: string) => void;
-  setInternalExpression: (value: string) => void;
+  setExpressionAction: (value: string) => void;
+  setInternalExpressionAction: (value: string) => void;
   internalExpression: string;
   error: string;
-  setError: (value: string) => void;
-  setMudadedCopy: (value: string) => void;
+  setErrorAction: (value: string) => void;
+  setMudadedCopyAction: (value: string) => void;
   mudadedCopy: string;
   controlModeCalculator: string;
-  setControlMSGEmpty: (value: boolean) => void;
+  setControlMSGEmptyAction: (value: boolean) => void;
   controlVisibleCheck: boolean;
-  setRefreshCalculations: React.Dispatch<React.SetStateAction<number>>;
+  setRefreshCalculationsAction: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function CalculadoraDefault({
   expression,
-  setExpression,
-  setInternalExpression,
+  setExpressionAction,
+  setInternalExpressionAction,
   internalExpression,
   error,
-  setError,
-  setMudadedCopy,
+  setErrorAction,
+  setMudadedCopyAction,
   mudadedCopy,
   controlModeCalculator,
-  setControlMSGEmpty,
+  setControlMSGEmptyAction,
   controlVisibleCheck,
-  setRefreshCalculations,
+  setRefreshCalculationsAction,
 }: CalculadoraProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const limited = 70;
 
   useEffect(() => {
     if (expression.length === 0) {
-      setError("");
+      setErrorAction("");
     }
-  }, [expression, setError]);
+  }, [expression, setErrorAction]);
 
   useEffect(() => {
     if (controlModeCalculator) {
-      setControlMSGEmpty(false);
+      setControlMSGEmptyAction(false);
     }
-  }, [controlModeCalculator, setControlMSGEmpty]);
+  }, [controlModeCalculator, setControlMSGEmptyAction]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -54,17 +55,22 @@ export default function CalculadoraDefault({
 
   useEffect(() => {
     if (mudadedCopy) {
-      setInternalExpression(mudadedCopy);
-      setExpression(
+      setInternalExpressionAction(mudadedCopy);
+      setExpressionAction(
         formatNumber(
           mudadedCopy.replace(".", ",").replace("*", "x").replace("/", "÷"),
           false,
         ),
       );
-      setMudadedCopy("");
+      setMudadedCopyAction("");
       restoreFocus();
     }
-  }, [mudadedCopy, setExpression, setInternalExpression, setMudadedCopy]);
+  }, [
+    mudadedCopy,
+    setExpressionAction,
+    setInternalExpressionAction,
+    setMudadedCopyAction,
+  ]);
 
   const restoreFocus = () => {
     if (inputRef.current) {
@@ -103,20 +109,20 @@ export default function CalculadoraDefault({
   async function calculate() {
     if (internalExpression === "") return;
     if (internalExpression.length >= limited) {
-      setError("limited");
+      setErrorAction("limited");
       return;
     }
     try {
-      setError("");
+      setErrorAction("");
       const result = evaluate(internalExpression);
       const rounded = Math.round(result * 10000) / 10000;
       const resultStr = rounded.toString();
       if (resultStr.length >= limited) {
-        setError("limited");
+        setErrorAction("limited");
         return;
       }
-      setInternalExpression(resultStr);
-      setExpression(
+      setInternalExpressionAction(resultStr);
+      setExpressionAction(
         formatNumber(
           resultStr.replace(".", ",").replace("*", "x").replace("/", "÷"),
         ),
@@ -134,13 +140,13 @@ export default function CalculadoraDefault({
           }),
         });
         if (response.ok) {
-          setRefreshCalculations((prev) => prev + 1);
+          setRefreshCalculationsAction((prev: number) => prev + 1);
         } else {
           console.error("Erro ao salvar cálculo:", await response.text());
         }
       }
     } catch {
-      setError("error");
+      setErrorAction("error");
       return;
     }
   }
@@ -149,7 +155,7 @@ export default function CalculadoraDefault({
     if (value === "") return;
 
     restoreFocus();
-    setError("");
+    setErrorAction("");
     const internalValue = value === "," ? "." : value;
     const operator = ["+", ".", "*", "/", "%", "(", ")"];
     if (internalExpression === "" && operator.includes(internalValue)) {
@@ -171,9 +177,9 @@ export default function CalculadoraDefault({
     }
 
     const newInternalExpression = internalExpression + internalValue;
-    setInternalExpression(newInternalExpression);
+    setInternalExpressionAction(newInternalExpression);
     const showComma = value === ",";
-    setExpression(
+    setExpressionAction(
       formatNumber(
         newInternalExpression
           .replace(".", ",")
@@ -237,8 +243,8 @@ export default function CalculadoraDefault({
         <CalcButton
           label="C"
           onClick={() => {
-            setExpression("");
-            setInternalExpression("");
+            setExpressionAction("");
+            setInternalExpressionAction("");
             restoreFocus();
           }}
           customStyle="dark:border-red-500/25 dark:bg-red-950/50 border-[hsl(var(--destructive))]/25 bg-[hsl(var(--destructive))]/10"
@@ -247,8 +253,8 @@ export default function CalculadoraDefault({
           label="⌫"
           onClick={() => {
             const newInternalExpression = internalExpression.slice(0, -1);
-            setInternalExpression(newInternalExpression);
-            setExpression(
+            setInternalExpressionAction(newInternalExpression);
+            setExpressionAction(
               formatNumber(newInternalExpression.replace(".", ","), true),
             );
             restoreFocus();

@@ -13,7 +13,7 @@ import {
   ChartTooltip,
 } from "@/app/_components/ui/chart";
 import { CartesianGrid, Line, LineChart } from "recharts";
-import { SimulationResults } from "./page";
+import { SimulationResults } from "./SimuladorFIIs";
 
 const chartConfig = {
   Dividendos: {

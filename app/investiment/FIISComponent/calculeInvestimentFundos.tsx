@@ -1,5 +1,5 @@
 import { RelatorioInvestimento } from "@/app/(home)/_actions/generate-ai-report/interfaces";
-import { SimulationResults } from "./page";
+import { SimulationResults } from "./SimuladorFIIs";
 
 interface CalculateInvestmentProps {
   amount: string;

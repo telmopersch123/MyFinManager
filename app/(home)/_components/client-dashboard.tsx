@@ -61,8 +61,8 @@ export default function ClientDashboard({ month }: Props) {
 
   useEffect(() => {
     if (!data) return;
-
     const element = valueDiv.current;
+
     if (!element) return;
 
     const observer = new ResizeObserver((entries) => {

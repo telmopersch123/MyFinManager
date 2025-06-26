@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   ChartConfig,

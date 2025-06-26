@@ -102,7 +102,7 @@ const RemoveTransactionButton = ({
       </Button>
       <Alert_Dialog
         open={open}
-        setOpen={setOpen}
+        setOpenAction={setOpen}
         handleConfirm={handleConfirm}
       />
     </>

@@ -29,7 +29,7 @@ function PlanChangeHandler({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (typeof window === "undefined" || !isLoaded) return;
 
     if (sessionStorage.getItem("isReloading") === "true") {
       sessionStorage.removeItem("isReloading");

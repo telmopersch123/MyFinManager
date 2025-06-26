@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -20,19 +21,19 @@ interface Calculo {
 interface JurosSimplesComponent {
   inputRef: React.RefObject<HTMLInputElement>;
   capital: string;
-  setCapital: React.Dispatch<React.SetStateAction<string>>;
+  setCapitalAction: React.Dispatch<React.SetStateAction<string>>;
   taxa: string;
-  setTaxa: React.Dispatch<React.SetStateAction<string>>;
+  setTaxaAction: React.Dispatch<React.SetStateAction<string>>;
   tempo: string;
-  setTempo: React.Dispatch<React.SetStateAction<string>>;
+  setTempoAction: React.Dispatch<React.SetStateAction<string>>;
   juros: string;
-  setJuros: React.Dispatch<React.SetStateAction<string>>;
+  setJurosAction: React.Dispatch<React.SetStateAction<string>>;
   montante: string;
   controlMSGEmpty: boolean;
-  handleTempoInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setControlMSGEmpty: (value: boolean) => void;
-  setMontante: React.Dispatch<React.SetStateAction<string>>;
-  setRefreshCalculations: React.Dispatch<React.SetStateAction<number>>;
+  handleTempoInputAction: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setControlMSGEmptyAction: (value: boolean) => void;
+  setMontanteAction: React.Dispatch<React.SetStateAction<string>>;
+  setRefreshCalculationsAction: React.Dispatch<React.SetStateAction<number>>;
   mudadedCopyJuros: {
     campo1: string;
     campo2: string;
@@ -45,32 +46,32 @@ interface JurosSimplesComponent {
     campo8: string;
   };
   controlVisibleCheck: boolean;
-  setIsCalculated: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsCalculatedAction: React.Dispatch<React.SetStateAction<boolean>>;
   isCalculated: boolean;
-  setHistoricoCalculos: React.Dispatch<React.SetStateAction<Calculo[]>>;
+  setHistoricoCalculosAction: React.Dispatch<React.SetStateAction<Calculo[]>>;
 }
 
 export default function JurosSimplesComponent({
   inputRef,
   capital,
-  setCapital,
+  setCapitalAction,
   taxa,
-  setTaxa,
+  setTaxaAction,
   tempo,
-  setTempo,
+  setTempoAction,
   juros,
-  setJuros,
+  setJurosAction,
   montante,
   controlMSGEmpty,
-  handleTempoInput,
-  setControlMSGEmpty,
-  setMontante,
-  setRefreshCalculations,
+  handleTempoInputAction,
+  setControlMSGEmptyAction,
+  setMontanteAction,
+  setRefreshCalculationsAction,
   mudadedCopyJuros,
   controlVisibleCheck,
-  setIsCalculated,
+  setIsCalculatedAction,
   isCalculated,
-  setHistoricoCalculos,
+  setHistoricoCalculosAction,
 }: JurosSimplesComponent) {
   const [periodoTaxa, setPeriodoTaxa] = useState<"mensal" | "anual">("anual");
   const [periodoTempo, setPeriodoTempo] = useState<"meses" | "anos">("anos");
@@ -78,10 +79,10 @@ export default function JurosSimplesComponent({
 
   async function calcularJurosSimples() {
     if (capital === "" || taxa === "" || tempo === "") {
-      setControlMSGEmpty(true);
+      setControlMSGEmptyAction(true);
       return;
     } else {
-      setControlMSGEmpty(false);
+      setControlMSGEmptyAction(false);
     }
     try {
       const capitalNum = parseFloat(
@@ -105,12 +106,12 @@ export default function JurosSimplesComponent({
 
       const jurosCalc = capitalNum * taxaNum * tempoNum;
       const montante = capitalNum + jurosCalc;
-      setJuros(jurosCalc.toFixed(2));
-      setMontante(montante.toFixed(2));
+      setJurosAction(jurosCalc.toFixed(2));
+      setMontanteAction(montante.toFixed(2));
       setCapitalAporte(capitalNum.toString());
-      setIsCalculated(true);
+      setIsCalculatedAction(true);
 
-      setHistoricoCalculos((prev) => [
+      setHistoricoCalculosAction((prev: Calculo[]) => [
         ...prev,
         {
           aporteCapital: capitalNum.toString(),
@@ -139,7 +140,7 @@ export default function JurosSimplesComponent({
           }),
         });
         if (response.ok) {
-          setRefreshCalculations((prev) => prev + 1);
+          setRefreshCalculationsAction((prev: number) => prev + 1);
         } else {
           console.error("Erro ao salvar cálculo:", await response.text());
         }
@@ -152,9 +153,9 @@ export default function JurosSimplesComponent({
 
   useEffect(() => {
     if (mudadedCopyJuros) {
-      setCapital(mudadedCopyJuros.campo1);
-      setTaxa(mudadedCopyJuros.campo3);
-      setTempo(mudadedCopyJuros.numero.toString());
+      setCapitalAction(mudadedCopyJuros.campo1);
+      setTaxaAction(mudadedCopyJuros.campo3);
+      setTempoAction(mudadedCopyJuros.numero.toString());
       if (
         mudadedCopyJuros.campo4 === "mensal" ||
         mudadedCopyJuros.campo4 === "anual"
@@ -169,7 +170,7 @@ export default function JurosSimplesComponent({
           mudadedCopyJuros.campo5 === "mensal" ? "meses" : "anos",
         );
       }
-      setHistoricoCalculos((prev) => [
+      setHistoricoCalculosAction((prev: Calculo[]) => [
         ...prev,
         {
           aporteCapital: mudadedCopyJuros.campo6,
@@ -178,9 +179,9 @@ export default function JurosSimplesComponent({
         },
       ]);
       setCapitalAporte(mudadedCopyJuros.campo6);
-      setJuros(mudadedCopyJuros.campo7);
-      setMontante(mudadedCopyJuros.campo8);
-      setIsCalculated(false);
+      setJurosAction(mudadedCopyJuros.campo7);
+      setMontanteAction(mudadedCopyJuros.campo8);
+      setIsCalculatedAction(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mudadedCopyJuros]);
@@ -199,7 +200,7 @@ export default function JurosSimplesComponent({
             ref={inputRef}
             type="text"
             value={capital}
-            onChange={(e) => customHandleCapitalChange(e, setCapital)}
+            onChange={(e) => customHandleCapitalChange(e, setCapitalAction)}
             className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
             placeholder="0"
           />
@@ -214,7 +215,7 @@ export default function JurosSimplesComponent({
               ref={inputRef}
               type="text"
               value={taxa}
-              onChange={(e) => customHandleCapitalChange(e, setTaxa)}
+              onChange={(e) => customHandleCapitalChange(e, setTaxaAction)}
               className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
               placeholder="0"
             />
@@ -243,7 +244,7 @@ export default function JurosSimplesComponent({
             <Input
               type="text"
               value={tempo}
-              onChange={handleTempoInput}
+              onChange={handleTempoInputAction}
               className="w-full border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--ring))] dark:border-neutral-700 dark:bg-neutral-700 dark:text-white dark:focus:border-primary dark:focus:ring-primary"
               placeholder="0"
             />

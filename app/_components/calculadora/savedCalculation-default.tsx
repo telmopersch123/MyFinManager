@@ -1,3 +1,4 @@
+"use client";
 import { Copy, Loader2, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -7,12 +8,12 @@ import { formatDateTime } from "./formatFunctions";
 import OpenFormated from "./open-formated";
 
 type SavedCalculationsProps = {
-  setMudadedCopy: (value: string) => void;
+  setMudadedCopyAction: (value: string) => void;
   refresh: number;
 };
 
 export default function SavedCalculationsDefault({
-  setMudadedCopy,
+  setMudadedCopyAction,
   refresh,
 }: SavedCalculationsProps) {
   const [calculations, setCalculations] = useState<
@@ -132,7 +133,7 @@ export default function SavedCalculationsDefault({
                   variant="ghost"
                   size="icon"
                   aria-label="Copiar cálculo"
-                  onClick={() => setMudadedCopy(calc.formula)}
+                  onClick={() => setMudadedCopyAction(calc.formula)}
                 >
                   <Copy className="h-4 w-4" />
                 </Button>

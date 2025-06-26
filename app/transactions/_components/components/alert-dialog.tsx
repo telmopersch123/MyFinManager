@@ -1,3 +1,4 @@
+"use client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,12 +61,12 @@ const openDialog = (
 
 interface openProps {
   open: { type: string; isOpen: boolean };
-  setOpen: Dispatch<SetStateAction<{ type: string; isOpen: boolean }>>;
+  setOpenAction: Dispatch<SetStateAction<{ type: string; isOpen: boolean }>>;
   handleConfirm?: () => void | Promise<void>;
 }
 export default function Alert_Dialog({
   open,
-  setOpen,
+  setOpenAction,
   handleConfirm,
 }: openProps) {
   const [title, setTitle] = useState("");
@@ -91,7 +92,7 @@ export default function Alert_Dialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
-              onClick={() => setOpen({ type: "", isOpen: false })}
+              onClick={() => setOpenAction({ type: "", isOpen: false })}
             >
               {open.type === "alert-1" ? "Cancelar" : "Ok"}
             </AlertDialogCancel>

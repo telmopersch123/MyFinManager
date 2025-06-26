@@ -1,3 +1,4 @@
+"use client";
 import { Calculo, MonthlyData } from "@/app/_interfaces/interface";
 import { useEffect, useState } from "react";
 import {
