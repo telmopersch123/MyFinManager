@@ -2,6 +2,7 @@
 
 import { db } from "@/app/_lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { Prisma } from "@prisma/client";
 import { getMonthDateRange } from "../../_components/getmonthDateRange";
 import {
   AcoesInputs,
@@ -46,17 +47,45 @@ export const generateAiReport = async ({
 
   const date = new Date();
   const { start, end } = getMonthDateRange(date.getFullYear(), Number(month));
+
   const transactionsRaw = await db.transaction.findMany({
     where: {
       userId,
       createdAt: { gte: start, lt: end },
     },
+    select: {
+      id: true,
+      userId: true,
+      amount: true,
+      createdAt: true,
+      name: true, // Opcional, se precisar
+      type: true, // Opcional, se precisar
+      category: true, // Opcional, se precisar
+      paymentMethod: true, // Opcional, se precisar
+      date: true, // Opcional, se precisar,
+    },
   });
 
-  const transactions = transactionsRaw.map((transaction) => ({
-    ...transaction,
-    amount: Number(transaction.amount),
-  }));
+  const transactions = transactionsRaw.map(
+    (
+      transaction: Prisma.TransactionGetPayload<{
+        select: {
+          id: true;
+          userId: true;
+          amount: true;
+          createdAt: true;
+          name: true; // Opcional, se precisar
+          type: true; // Opcional, se precisar
+          category: true; // Opcional, se precisar
+          paymentMethod: true; // Opcional, se precisar
+          date: true; // Opcional, se precisar},
+        };
+      }>,
+    ) => ({
+      ...transaction,
+      amount: Number(transaction.amount),
+    }),
+  );
 
   const totalExpenses = transactions
     .filter((t) => t.type === "EXPENSE")
