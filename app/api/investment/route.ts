@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { auth } from "@clerk/nextjs/server";
 
 export async function GET() {

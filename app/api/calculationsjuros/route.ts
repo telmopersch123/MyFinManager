@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { MonthlyData } from "@/app/_interfaces/interface";
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@clerk/nextjs/server";

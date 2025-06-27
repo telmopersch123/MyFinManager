@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { getDashboardData } from "@/app/_components/get-dashboard-data";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
