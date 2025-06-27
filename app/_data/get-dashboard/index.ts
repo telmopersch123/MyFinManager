@@ -1,3 +1,4 @@
+"use server";
 import { getMonthDateRange } from "@/app/(home)/_components/getmonthDateRange";
 import { db } from "@/app/_lib/prisma";
 
@@ -92,9 +93,8 @@ export const getDashBoard = cache(
     ).map((category) => ({
       category: category.category,
       totalAmount: Number(category._sum.amount || 0),
-      percentageOfTotal: Math.round(
+      percentageOfTotal:
         (Number(category._sum.amount || 0) / Number(totalForType)) * 100,
-      ),
     }));
 
     const lastTransaction = (

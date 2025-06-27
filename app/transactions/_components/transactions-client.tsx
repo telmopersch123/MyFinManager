@@ -132,7 +132,7 @@ export function TransactionsClient({
           </h3>
         </div>
         <div className="w-full overflow-x-auto rounded-xl border border-opacity-10 md:rounded-none md:border-none md:border-opacity-0">
-          <div className="min-h-[400px] overflow-auto">
+          <div className="overflow-auto">
             <DataTable
               columns={transactionsColumns(
                 month,

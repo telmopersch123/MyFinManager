@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { DashboardData } from "@/app/_data/get-dashboard/type";
 import { generateAiReport } from "../_actions/generate-ai-report";
 import {
   AcoesInputs,
@@ -27,6 +28,7 @@ import {
 } from "../_actions/generate-ai-report/interfaces";
 
 export interface AiReportButtonProps {
+  dashboard?: DashboardData;
   hasPremiumPlan?: boolean;
   month?: string;
   investiment?: RelatorioInvestimento[];
@@ -48,6 +50,7 @@ const AiReportButton = ({
   category = "investimentos",
   quantity,
   setValidClick,
+  dashboard,
 }: AiReportButtonProps) => {
   const [report, setReport] = useState<string | void | undefined>();
   const [reportIsLoading, setReportIsLoading] = useState(false);
@@ -93,6 +96,7 @@ const AiReportButton = ({
         fiisInputs,
         bitcoinInputs,
         category,
+        dashboard,
       });
 
       // Chamar a API para obter o relatório

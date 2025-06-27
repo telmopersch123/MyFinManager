@@ -1,9 +1,8 @@
 "use server";
 
-import { db } from "@/app/_lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
-import { getMonthDateRange } from "../../_components/getmonthDateRange";
+import { DashboardData } from "@/app/_data/get-dashboard/type";
 import {
   AcoesInputs,
   BitcoinInputs,
@@ -21,6 +20,7 @@ interface TransactionPercentageType {
   fiisInputs?: FIIsInputs[];
   bitcoinInputs?: BitcoinInputs[];
   category?: string;
+  dashboard?: DashboardData;
 }
 
 export const generateAiReport = async ({
@@ -31,6 +31,7 @@ export const generateAiReport = async ({
   fiisInputs,
   bitcoinInputs,
   category,
+  dashboard,
 }: TransactionPercentageType) => {
   generateAiReportSchema.parse({ month });
 
@@ -45,41 +46,9 @@ export const generateAiReport = async ({
     throw new Error("Unauthorized, Not Premium Plan");
   }
 
-  const date = new Date();
-  const { start, end } = getMonthDateRange(date.getFullYear(), Number(month));
-
-  const transactionsRaw = await db.transaction.findMany({
-    where: {
-      userId,
-      createdAt: { gte: start, lt: end },
-    },
-    select: {
-      id: true,
-      userId: true,
-      amount: true,
-      createdAt: true,
-      name: true, // Opcional, se precisar
-      type: true, // Opcional, se precisar
-      category: true, // Opcional, se precisar
-      paymentMethod: true, // Opcional, se precisar
-      date: true, // Opcional, se precisar,
-    },
-  });
-
-  const transactions = transactionsRaw.map((transaction) => ({
-    ...transaction,
-    amount: Number(transaction.amount),
-  }));
-
-  const totalExpenses = transactions
-    .filter((t: { type: string }) => t.type === "EXPENSE")
-    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
-  const totalInvestment = transactions
-    .filter((t: { type: string }) => t.type === "INVESTMENT")
-    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
-  const totalDeposit = transactions
-    .filter((t: { type: string }) => t.type === "DEPOSIT")
-    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
+  const totalExpenses = dashboard?.expensesTotal;
+  const totalInvestment = dashboard?.investmentsTotal;
+  const totalDeposit = dashboard?.depositsTotal;
 
   const getMessages = () => {
     if (category === "dashboard") {
@@ -91,10 +60,10 @@ export const generateAiReport = async ({
         },
         {
           role: "user",
-          content: `Com base nestas transações: ${JSON.stringify(transactions)}. 
-O total depositado foi de R$ ${totalDeposit.toFixed(2)}. 
-O total investido foi de R$ ${totalInvestment.toFixed(2)}. 
-E o total gasto foi de R$ ${totalExpenses.toFixed(2)}. 
+          content: `Com base nestas transações: ${JSON.stringify(dashboard)}. 
+O total depositado foi de R$ ${totalDeposit?.toFixed(2)}. 
+O total investido foi de R$ ${totalInvestment?.toFixed(2)}. 
+E o total gasto foi de R$ ${totalExpenses?.toFixed(2)}. 
 Gere um relatório financeiro mensal com base nesses dados, destacando padrões de comportamento, categorias com maior gasto, possíveis excessos e sugestões de economia personalizadas.`,
         },
       ];
@@ -122,7 +91,7 @@ Gere um relatório financeiro mensal com base nesses dados, destacando padrões 
                   .join("; ")
               : "Nenhum investimento disponível";
           })()}.
-**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit.toFixed(2)}. O total investido foi de R$ ${totalInvestment.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses.toFixed(2)}.
+**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit?.toFixed(2)}. O total investido foi de R$ ${totalInvestment?.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses?.toFixed(2)}.
 **Importante**: Se o valor final for menor que o valor bruto do penúltimo mês, isso se deve à cobrança do Imposto de Renda no resgate, e não representa perda de rendimento.
 Por favor, gere um relatório financeiro mensal que contenha:
 1. **Resumo**: Um resumo objetivo para cada investimento, destacando o tipo, total investido, juros acumulados e valor final.
@@ -157,7 +126,7 @@ Formate o relatório com clareza, usando títulos e separando seções para faci
                   .join("; ")
               : "Nenhum investimento disponível";
           })()}.
-**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit.toFixed(2)}. O total investido foi de R$ ${totalInvestment.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses.toFixed(2)}.
+**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit?.toFixed(2)}. O total investido foi de R$ ${totalInvestment?.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses?.toFixed(2)}.
 Por favor, gere um relatório financeiro mensal que contenha:
 1. **Resumo**: Um resumo objetivo para cada ação, destacando o tipo, número de ações, ganho de capital líquido, valor final estimado e taxa anual estimada.
 2. **Análise**: Padrões observados, como oscilações de preço, crescimento do portfólio e impacto da taxa anual estimada.
@@ -191,7 +160,7 @@ Formate o relatório com clareza, usando títulos e separando seções para faci
                   .join("; ")
               : "Nenhum investimento disponível";
           })()}.
-**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit.toFixed(2)}. O total investido foi de R$ ${totalInvestment.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses.toFixed(2)}.
+**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit?.toFixed(2)}. O total investido foi de R$ ${totalInvestment?.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses?.toFixed(2)}.
 Por favor, gere um relatório financeiro mensal que contenha:
 1. **Resumo**: Um resumo objetivo para cada FII, destacando o tipo, rendimentos mensais acumulados, ganho de capital (cota), valor final estimado e dividend yield anualizado.
 2. **Análise**: Padrões observados, como consistência dos dividendos, valorização das cotas e impacto do dividend yield.
@@ -225,7 +194,7 @@ Formate o relatório com clareza, usando títulos e separando seções para faci
                   .join("; ")
               : "Nenhum investimento disponível";
           })()}.
-**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit.toFixed(2)}. O total investido foi de R$ ${totalInvestment.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses.toFixed(2)}.
+**Carteira do Usuário**: O total depositado foi de R$ ${totalDeposit?.toFixed(2)}. O total investido foi de R$ ${totalInvestment?.toFixed(2)}. E o total gasto foi de R$ ${totalExpenses?.toFixed(2)}.
 Por favor, gere um relatório financeiro mensal que contenha:
 1. **Resumo**: Um resumo objetivo para cada criptomoeda, destacando o tipo, quantidade de BTC, ganho de capital médio, valor final estimado e taxas pagas.
 2. **Análise**: Padrões observados, como volatilidade, crescimento do investimento e impacto das taxas.

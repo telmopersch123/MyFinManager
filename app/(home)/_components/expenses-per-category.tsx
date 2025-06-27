@@ -36,14 +36,14 @@ export default function ExpensePerCategory({
       }
       return response.json();
     },
-    {
-      fallbackData: {
-        dashboard: {
-          totalExpensePerCategory: initialExpensesPerCategory,
-        },
-      },
-      revalidateOnFocus: false,
-    },
+    // {
+    //   fallbackData: {
+    //     dashboard: {
+    //       totalExpensePerCategory: initialExpensesPerCategory,
+    //     },
+    //   },
+    //   revalidateOnFocus: false,
+    // },
   );
 
   useEffect(() => {
@@ -86,17 +86,16 @@ export default function ExpensePerCategory({
             <div key={category.category} className="space-y-2">
               <div className="flex w-full justify-between">
                 <p className="text-sm font-bold">
-                  {
-                    transactionCategoryMap[
-                      category.category as keyof typeof transactionCategoryMap
-                    ]
-                  }
+                  {transactionCategoryMap[category.category]}
                 </p>
                 <p className="text-sm font-bold">
-                  {category.percentageOfTotal as number}%
+                  {category.percentageOfTotal === 100
+                    ? category.percentageOfTotal.toFixed(0)
+                    : category.percentageOfTotal.toFixed(2)}
+                  %
                 </p>
               </div>
-              <Progress value={category.percentageOfTotal as number} />
+              <Progress value={category.percentageOfTotal} />
               <p className="font-mulish my-[14px] text-sm font-semibold leading-[100%] tracking-[0%] text-opacity-[60%]">
                 {formatToBRL(category.totalAmount)}
               </p>

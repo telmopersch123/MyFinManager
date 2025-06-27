@@ -109,6 +109,7 @@ export default function ClientDashboard({ month }: Props) {
           </h1>
           <div className="item-center flex flex-wrap justify-center gap-3">
             <AiReportButton
+              dashboard={dashboard}
               month={month}
               hasPremiumPlan={
                 user?.publicMetadata.subscriptionPlan === "premium"

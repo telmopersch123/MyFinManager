@@ -32,8 +32,8 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="h-[800px] w-full max-w-full overflow-auto rounded-md border md:h-[calc(100vh-300px)]">
-      <Table className="h-[calc(100vh-300px)] min-w-[700px]">
+    <div className="h-auto max-h-[600px] w-full max-w-full overflow-auto rounded-md border">
+      <Table className="min-w-[700px]">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="h-6 md:h-8">
@@ -59,7 +59,7 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-6 md:h-8"
+                // className="h-6 md:h-8"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
