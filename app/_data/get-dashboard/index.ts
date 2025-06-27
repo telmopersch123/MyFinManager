@@ -1,9 +1,10 @@
 import { getMonthDateRange } from "@/app/(home)/_components/getmonthDateRange";
 import { db } from "@/app/_lib/prisma";
-import { TransactionType } from "@prisma/client";
+
 import { TotalExpenseCategory, TransactionPercentageType } from "./type";
 
 import { auth } from "@clerk/nextjs/server";
+import { TransactionType } from "@prisma/client";
 import { cache } from "react";
 
 export const getDashBoard = cache(

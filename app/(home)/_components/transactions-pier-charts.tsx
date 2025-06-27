@@ -7,6 +7,7 @@ import {
   ChartTooltipContent,
 } from "@/app/_components/ui/chart";
 import { TransactionPercentageType } from "@/app/_data/get-dashboard/type";
+
 import { TransactionType } from "@prisma/client";
 import { PiggyBankIcon, TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { useEffect, useState } from "react";

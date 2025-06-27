@@ -86,13 +86,17 @@ export default function ExpensePerCategory({
             <div key={category.category} className="space-y-2">
               <div className="flex w-full justify-between">
                 <p className="text-sm font-bold">
-                  {transactionCategoryMap[category.category]}
+                  {
+                    transactionCategoryMap[
+                      category.category as keyof typeof transactionCategoryMap
+                    ]
+                  }
                 </p>
                 <p className="text-sm font-bold">
-                  {category.percentageOfTotal}%
+                  {category.percentageOfTotal as number}%
                 </p>
               </div>
-              <Progress value={category.percentageOfTotal} />
+              <Progress value={category.percentageOfTotal as number} />
               <p className="font-mulish my-[14px] text-sm font-semibold leading-[100%] tracking-[0%] text-opacity-[60%]">
                 {formatToBRL(category.totalAmount)}
               </p>

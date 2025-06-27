@@ -32,13 +32,17 @@ export function transactionsColumns(
       accessorKey: "category",
       header: "Categoria",
       cell: ({ row: { original: transaction } }) =>
-        transactionCategoryMap[transaction.category],
+        transactionCategoryMap[
+          transaction.category as keyof typeof transactionCategoryMap
+        ],
     },
     {
       accessorKey: "paymentMethod",
       header: "Método de Pagamento",
       cell: ({ row: { original: transaction } }) =>
-        transactionPaymentMap[transaction.paymentMethod],
+        transactionPaymentMap[
+          transaction.paymentMethod as keyof typeof transactionPaymentMap
+        ],
     },
     {
       accessorKey: "date",

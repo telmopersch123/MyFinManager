@@ -2,7 +2,7 @@
 
 import { db } from "@/app/_lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { Prisma } from "@prisma/client";
+
 import { getMonthDateRange } from "../../_components/getmonthDateRange";
 import {
   AcoesInputs,
@@ -66,36 +66,20 @@ export const generateAiReport = async ({
     },
   });
 
-  const transactions = transactionsRaw.map(
-    (
-      transaction: Prisma.TransactionGetPayload<{
-        select: {
-          id: true;
-          userId: true;
-          amount: true;
-          createdAt: true;
-          name: true; // Opcional, se precisar
-          type: true; // Opcional, se precisar
-          category: true; // Opcional, se precisar
-          paymentMethod: true; // Opcional, se precisar
-          date: true; // Opcional, se precisar},
-        };
-      }>,
-    ) => ({
-      ...transaction,
-      amount: Number(transaction.amount),
-    }),
-  );
+  const transactions = transactionsRaw.map((transaction) => ({
+    ...transaction,
+    amount: Number(transaction.amount),
+  }));
 
   const totalExpenses = transactions
-    .filter((t) => t.type === "EXPENSE")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t: { type: string }) => t.type === "EXPENSE")
+    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
   const totalInvestment = transactions
-    .filter((t) => t.type === "INVESTMENT")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t: { type: string }) => t.type === "INVESTMENT")
+    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
   const totalDeposit = transactions
-    .filter((t) => t.type === "DEPOSIT")
-    .reduce((sum, t) => sum + t.amount, 0);
+    .filter((t: { type: string }) => t.type === "DEPOSIT")
+    .reduce((sum: number, t: { amount: number }) => sum + t.amount, 0);
 
   const getMessages = () => {
     if (category === "dashboard") {
