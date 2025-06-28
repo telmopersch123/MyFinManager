@@ -19,12 +19,13 @@ function PlanChangeHandler({
 }) {
   const { user, isLoaded } = useUser();
   const hasPremiumPlan = user?.publicMetadata?.subscriptionPlan === "premium";
-  const [valided, setValided] = useState(
-    typeof window !== "undefined" &&
-      sessionStorage.getItem("setValided") === "true"
-      ? true
-      : false,
-  );
+  const [valided, setValided] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("setValided") === "true" ? true : false;
+    }
+    return false;
+  });
+  // console.log(valided);
   const prevHasPremiumPlan = useRef<boolean | undefined>();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -39,6 +40,8 @@ function PlanChangeHandler({
     const stored = sessionStorage.getItem("prevHasPremiumPlan");
     if (stored !== null) {
       prevHasPremiumPlan.current = stored === "true";
+    } else {
+      prevHasPremiumPlan.current = hasPremiumPlan;
     }
 
     if (prevHasPremiumPlan.current && !hasPremiumPlan) {
@@ -59,7 +62,7 @@ function PlanChangeHandler({
         }
       };
       resetQuantity();
-    } else if (!prevHasPremiumPlan.current && hasPremiumPlan) {
+    } else if (!prevHasPremiumPlan.current && hasPremiumPlan && !valided) {
       setIsVisible(false);
       sessionStorage.setItem("setValided", "true");
       window.location.reload();
@@ -68,8 +71,8 @@ function PlanChangeHandler({
         setIsVisible(true);
         timeoutRef.current = setTimeout(() => {
           setIsVisible(false);
-          sessionStorage.setItem("setValided", "false");
           setValided(false);
+          sessionStorage.setItem("setValided", "false");
         }, 3000);
       };
       if (document.readyState === "complete") {
