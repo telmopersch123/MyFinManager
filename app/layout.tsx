@@ -39,6 +39,8 @@ function PlanChangeHandler({
     const stored = sessionStorage.getItem("prevHasPremiumPlan");
     if (stored !== null) {
       prevHasPremiumPlan.current = stored === "true";
+    } else {
+      prevHasPremiumPlan.current = hasPremiumPlan;
     }
 
     if (prevHasPremiumPlan.current && !hasPremiumPlan) {
