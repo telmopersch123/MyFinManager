@@ -25,7 +25,6 @@ function PlanChangeHandler({
     }
     return false;
   });
-  // console.log(valided);
   const prevHasPremiumPlan = useRef<boolean | undefined>();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -40,8 +39,6 @@ function PlanChangeHandler({
     const stored = sessionStorage.getItem("prevHasPremiumPlan");
     if (stored !== null) {
       prevHasPremiumPlan.current = stored === "true";
-    } else {
-      prevHasPremiumPlan.current = hasPremiumPlan;
     }
 
     if (prevHasPremiumPlan.current && !hasPremiumPlan) {
