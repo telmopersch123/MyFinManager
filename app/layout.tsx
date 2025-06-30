@@ -65,6 +65,10 @@ function PlanChangeHandler({
       setIsVisible(false);
       sessionStorage.setItem("setValided", "true");
       window.location.reload();
+    } else if (!prevHasPremiumPlan.current && !hasPremiumPlan && !valided) {
+      setIsVisible(false);
+      sessionStorage.setItem("setValided", "true");
+      // setValided(true);
     } else if (prevHasPremiumPlan.current && hasPremiumPlan && valided) {
       const handleLoad = () => {
         setIsVisible(true);
