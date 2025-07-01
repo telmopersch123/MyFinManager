@@ -5,7 +5,7 @@ import { dark } from "@clerk/themes";
 import { Mulish } from "next/font/google";
 
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import PlanChangeHandler from "./(home)/_components/PlanChangeHandler";
 import Sucess from "./_components/sucess";
 import "./globals.css";
@@ -33,7 +33,9 @@ export default function RootLayout({
             baseTheme: theme === "light" ? undefined : dark,
           }}
         >
-          <PlanChangeHandler setIsVisibleAction={setIsVisible} />
+          <Suspense>
+            <PlanChangeHandler setIsVisibleAction={setIsVisible} />
+          </Suspense>
           <div className="flex h-full flex-col overflow-x-hidden">
             {children}
 
