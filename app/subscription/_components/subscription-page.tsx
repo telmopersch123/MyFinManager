@@ -117,7 +117,7 @@ export default function SubscriptionClient({
               </h2>
               <div className="flex items-center justify-center gap-3">
                 <span className="text-4xl">R$</span>
-                <span className="font-sewmibold text-6xl">3,90</span>
+                <span className="font-sewmibold text-6xl">3,99</span>
                 <span className="text-2xl text-muted-foreground">/mês</span>
               </div>
             </CardHeader>
