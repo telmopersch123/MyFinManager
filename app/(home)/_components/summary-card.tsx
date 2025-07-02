@@ -68,8 +68,8 @@ const SummaryCard = ({
             className={`font-bold ${
               size === "small"
                 ? "-ml-3 text-[3.5vw] sm:text-[18px]"
-                : "rounded-md bg-black/10 p-2 text-2xl text-white dark:bg-white dark:bg-opacity-5 sm:text-4xl"
-            }`}
+                : `whitespace-nowrap rounded-md bg-black/10 p-2 text-2xl text-white dark:bg-white dark:bg-opacity-5 sm:text-4xl ${Number(amount) < 0 ? "text-red-500 dark:text-red-400" : "text-green-500 dark:text-green-400"}`
+            } `}
           >
             {Intl.NumberFormat("pt-BR", {
               style: "currency",
