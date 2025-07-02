@@ -40,7 +40,7 @@ const AddTransactionButton = ({
           <TooltipTrigger asChild>
             <div>
               <Button
-                className={`rounded-full font-bold ${
+                className={`!z-20 rounded-full font-bold ${
                   location === "dashboard"
                     ? "bg-white text-black hover:bg-green-200 hover:!text-black dark:bg-primary dark:text-white dark:hover:bg-white"
                     : "bg-primary text-white"

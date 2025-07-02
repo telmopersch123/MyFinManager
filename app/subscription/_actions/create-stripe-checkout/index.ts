@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { Stripe } from "stripe";
 
 export const createStripeCheckout = async () => {
@@ -16,7 +16,30 @@ export const createStripeCheckout = async () => {
     apiVersion: "2025-02-24.acacia",
   });
 
+  // Obter o usuário do Clerk para verificar o customerId
+  const user = await clerkClient().users.getUser(userId);
+  let customerId = user.publicMetadata.stripeCustomerId as string | undefined;
+
+  // Criar cliente no Stripe se não existir
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email: user.emailAddresses[0]?.emailAddress,
+      metadata: {
+        clerk_user_id: userId,
+      },
+    });
+    customerId = customer.id;
+    // Atualizar o usuário do Clerk com o customerId
+    await clerkClient().users.updateUser(userId, {
+      publicMetadata: {
+        ...user.publicMetadata,
+        stripeCustomerId: customerId,
+      },
+    });
+  }
+
   const session = await stripe.checkout.sessions.create({
+    customer: customerId,
     payment_method_types: ["card"],
     mode: "subscription",
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/?checkout=success`,
