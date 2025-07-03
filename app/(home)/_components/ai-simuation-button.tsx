@@ -138,7 +138,6 @@ const AiSimulationButton = ({
         <DialogTrigger asChild>
           <Button
             disabled={(quantity ?? 10) >= 10 && !hasPremiumPlan}
-            variant="ghost"
             className="hidden w-[200px] items-center gap-2 bg-black/5 text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))/0.1] dark:bg-white/5 dark:text-[hsl(var(--foreground))] hover:dark:bg-white/10"
           >
             Calcular com IA <BotIcon className="h-4 w-4" />
@@ -172,7 +171,7 @@ const AiSimulationButton = ({
               <Button
                 variant="ghost"
                 onClick={handleCancelFetch}
-                className="text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))/0.1] dark:text-[hsl(var(--muted-foreground))] dark:hover:bg-[hsl(var(--muted))/0.1]"
+                className="bg-zinc-900/30"
               >
                 Cancelar
               </Button>
@@ -182,7 +181,7 @@ const AiSimulationButton = ({
               disabled={
                 reportIsLoading || ((quantity ?? 0) >= 10 && !hasPremiumPlan)
               }
-              className="flex items-center gap-2 bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:bg-[hsl(var(--primary))/0.9] dark:bg-[hsl(var(--primary))] dark:text-[hsl(var(--primary-foreground))] dark:hover:bg-[hsl(var(--primary))/0.9]"
+              className="flex items-center gap-2 !bg-primary text-[hsl(var(--primary-foreground))] dark:text-[hsl(var(--primary-foreground))]"
             >
               {reportIsLoading && (
                 <Loader2Icon className="h-4 w-4 animate-spin" />

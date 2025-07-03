@@ -208,7 +208,7 @@ const UpsertTransactionDialog = ({
           }
         }}
       >
-        <DialogContent className="w-[80%] sm:w-[500px]">
+        <DialogContent className="h-[85%] w-[80%] overflow-auto sm:w-[500px]">
           <DialogHeader>
             <DialogTitle>
               {isUpdate ? "Editar" : "Adicionar"} transação

@@ -18,7 +18,7 @@ const LastTransactions = ({ lastTransaction }: LastTransactionsProps) => {
       case "DEPOSIT":
         return "text-green-500";
       case "INVESTMENT":
-        return "text-white";
+        return "dark:text-white text-[#eab308]";
       case "EXPENSE":
         return "text-red-500";
       default:

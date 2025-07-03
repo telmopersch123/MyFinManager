@@ -13,6 +13,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
+        "xs-custom": "385px",
         "1xl-custom": "460px",
         "2xl-custom": "1400px", // nome personalizado para 1400px
         "3xl-custom": "1850px", // nome personalizado para 1600px

@@ -42,12 +42,21 @@ export const TransactionsPieChart = ({
   investmentsTotal,
   expensesTotal,
 }: TransactionsPieChartProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setIsDarkMode(isDark);
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(document.body.classList.contains("dark"));
+    });
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => {
+      observer.disconnect();
+    };
   }, []);
+
   const chartData = [
     {
       type: TransactionType.DEPOSIT,
@@ -57,7 +66,7 @@ export const TransactionsPieChart = ({
     {
       type: TransactionType.INVESTMENT,
       amount: investmentsTotal,
-      fill: isDarkMode ? "#ffffff" : "#d3d3d3",
+      fill: isDarkMode ? "#ffffff" : "rgba(234, 179, 8, 0.5)",
     },
     {
       type: TransactionType.EXPENSE,

@@ -205,7 +205,7 @@ export default function GetCalculator() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="absolute bottom-0 right-0 m-10">
+        <div className="absolute bottom-0 right-0 m-5">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
